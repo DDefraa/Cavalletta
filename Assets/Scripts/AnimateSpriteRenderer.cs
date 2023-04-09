@@ -5,10 +5,10 @@ using UnityEngine;
 public class AnimateSpriteRenderer : MonoBehaviour
 {
 
-    public Sprite idleSprite;
-    public Sprite[] animationSprites; 
-
     private SpriteRenderer spriteRenderer;
+
+    public Sprite idleSprite;
+    public Sprite[] animationSprites;
 
     public float animationTime = 0.25f;
     private int animationFrame;
@@ -18,7 +18,7 @@ public class AnimateSpriteRenderer : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer= GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -31,41 +31,27 @@ public class AnimateSpriteRenderer : MonoBehaviour
         spriteRenderer.enabled = false;
     }
 
-
-    private void NextFrame()
+    private void Start()
     {
         InvokeRepeating(nameof(NextFrame), animationTime, animationTime);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-
-
-
-    // Update is called once per frame
-    void Update()
+    private void NextFrame()
     {
         animationFrame++;
 
         if (loop && animationFrame >= animationSprites.Length)
         {
-
             animationFrame = 0;
-
         }
 
-        if(idle)
+        if (idle)
         {
             spriteRenderer.sprite = idleSprite;
         }
-        else if(animationFrame >= 0 && animationFrame < animationSprites.Length)
+        else if (animationFrame >= 0 && animationFrame < animationSprites.Length)
         {
             spriteRenderer.sprite = animationSprites[animationFrame];
-         }
-
+        }
     }
 }
