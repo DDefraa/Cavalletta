@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Tilemaps;
 
 public class BombController : MonoBehaviour
 {
@@ -14,9 +15,14 @@ public class BombController : MonoBehaviour
 
 
     [Header("Explosions")]
+    public LayerMask explosionLayerMask;
     public Explosion explosionPrefab;
     public float explosionDuration = 1f;
     public int explosionRadius = 1;
+
+    [Header("Destructibles")]
+    public Destructible destructiblePrefab;
+    public Tilemap destructibleTiles;
 
     private void OnEnabled()
     {
@@ -91,6 +97,12 @@ public class BombController : MonoBehaviour
         }
         position += direction;
 
+        if(Physics2D.OverlapBox(position, Vector2.one / 2f, 0f, explosionLayerMask))
+        {
+            CleareDestructible(position);
+            return;
+        }
+
         Explosion explosion = Instantiate(explosionPrefab, position, Quaternion.identity);
         explosion.SetActiveRenderer(length > 1 ? explosion.middle : explosion.end);
         explosion.SetDirection(direction);
@@ -98,6 +110,21 @@ public class BombController : MonoBehaviour
        
 
         Explode(position, direction, length - 1);
+    }
+
+    private void CleareDestructible(Vector2 position)
+    {
+        Vector3Int cell = destructibleTiles.WorldToCell(position);
+        TileBase tile = destructibleTiles.GetTile(cell);
+
+        if(tile != null)
+        {
+            Instantiate(destructiblePrefab, position, Quaternion.identity);
+            destructibleTiles.SetTile(cell, null);
+
+        }
+
+
     }
 
 }
