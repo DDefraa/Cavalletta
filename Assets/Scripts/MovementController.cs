@@ -96,7 +96,7 @@ public class MovementController : MonoBehaviour
         }
     }
 
-    private void DeathSequence()
+    public void DeathSequence()
     {
         enabled = false;
         GetComponent<BombController>().enabled = false;
@@ -110,10 +110,10 @@ public class MovementController : MonoBehaviour
         Invoke(nameof(OnDeathSequenceEnded), 1.25f);
     }
 
-    private void OnDeathSequenceEnded()
+    public void OnDeathSequenceEnded()
     {
         gameObject.SetActive(false);
-        FindObjectOfType<GameManager>().CheckWinState();
+        FindObjectOfType<GameManager>().LooseState();
     }
 
 }

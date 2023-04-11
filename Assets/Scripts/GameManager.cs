@@ -5,28 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] players;
+    public GameObject[] enemy;
+    public GameObject player;
 
     public void CheckWinState()
     {
         int aliveCount = 0;
-
-        foreach (GameObject player in players)
+        
+        foreach (GameObject enemy in enemy)
         {
-            if (player.activeSelf)
+            if (enemy.activeSelf)
             {
                 aliveCount++;
             }
         }
 
-        if (aliveCount <= 1)
+        if (aliveCount == 0)
         {
-            Invoke(nameof(NewRound), 3f);
+            Invoke(nameof(Victory), 1f);
         }
+
     }
 
-    private void NewRound()
+    private void Victory()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Victory");
     }
+
+    public void LooseState()
+    {
+        SceneManager.LoadScene("Lost");
+
+    }
+
 }

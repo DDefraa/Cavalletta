@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    public GameManager gameManager;  
+    public GameObject player;
+
     public new Rigidbody2D rigidbody;
     public float velocitaNemico = 3f;
 
     private Vector2 direction = Vector2.down;
-    //Vector2 direzioneMovimento;
+    
 
     public float intervalloCambiamentoDirezione; // intervallo di tempo in secondi tra un cambio di direzione e l'altro
     float tempoUltimoCambiamentoDirezione;
@@ -60,4 +63,27 @@ public class EnemyMovement : MonoBehaviour
         direction = direzioneCasuale;
         tempoUltimoCambiamentoDirezione = Time.time;
     }
+
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Explosion"))
+        {
+            gameObject.SetActive(false);
+            FindObjectOfType<GameManager>().CheckWinState();
+        }
+
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            player.SetActive(false);
+            gameManager.LooseState();
+        }
+    }
+
+
+
+
 }
