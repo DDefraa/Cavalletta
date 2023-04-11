@@ -8,8 +8,8 @@ public class MovementController : MonoBehaviour
 
 
     public new Rigidbody2D rigidbody;
-    private Vector2 direction = Vector2.down;
     public float speed = 5f;
+    private Vector2 direction = Vector2.down;
 
     public KeyCode inputUp = KeyCode.W;
     public KeyCode inputDown= KeyCode.S;
